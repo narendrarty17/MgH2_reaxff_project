@@ -1,0 +1,41 @@
+LAMMPS (22 Jul 2025 - Update 3)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread.
+  using 1 OpenMP thread(s) per MPI task
+# ------------------------------------------------------------
+# Mg hydrogenation demo using ReaxFF (Mg/O/H)
+# ------------------------------------------------------------
+
+units           real
+atom_style      charge
+boundary        p p p
+
+# --- Create simulation box ---
+lattice         hcp 3.21
+Lattice spacing in x,y,z = 3.21 5.5598831 5.241908
+region          box block 0 10 0 10 0 6
+create_box      3 box
+Created orthogonal box = (0 0 0) to (32.1 55.598831 31.451448)
+  1 by 1 by 1 MPI processor grid
+
+# --- Create Mg slab ---
+create_atoms    3 region box
+Created 2400 atoms
+  using lattice units in orthogonal box = (0 0 0) to (32.1 55.598831 31.451448)
+  create_atoms CPU = 0.001 seconds
+
+# --- Create hydrogen atoms above slab ---
+region          hgas block 0 10 0 10 6 10
+create_atoms    1 random 200 12345 hgas
+Created 0 atoms
+  using lattice units in orthogonal box = (0 0 0) to (32.1 55.598831 31.451448)
+  create_atoms CPU = 0.000 seconds
+
+# --- Masses (required but ignored by ReaxFF energetics) ---
+mass 1 1.008
+mass 2 15.999
+mass 3 24.305
+
+# --- ReaxFF setup ---
+pair_style      reaxff NULL
+pair_coeff      * * ffield.reax.mgoh H O Mg
+ERROR on proc 0: The ReaxFF parameter file ffield.reax.mgoh cannot be opened: No such file or directory (src/REAXFF/reaxff_ffield.cpp:77)

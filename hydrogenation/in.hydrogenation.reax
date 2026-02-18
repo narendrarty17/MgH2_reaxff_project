@@ -1,0 +1,51 @@
+# ------------------------------------------------------------
+# Mg hydrogenation demo using ReaxFF (Mg/O/H)
+# ------------------------------------------------------------
+
+units           real
+atom_style      charge
+boundary        p p p
+
+# --- Create simulation box ---
+lattice         hcp 3.21
+region          box block 0 10 0 10 0 6
+create_box      3 box
+
+# --- Create Mg slab ---
+create_atoms    3 region box
+
+# --- Create hydrogen atoms above slab ---
+region          hgas block 0 10 0 10 6 10
+create_atoms    1 random 200 12345 hgas
+
+# --- Masses (required but ignored by ReaxFF energetics) ---
+mass 1 1.008
+mass 2 15.999
+mass 3 24.305
+
+# --- ReaxFF setup ---
+pair_style      reaxff NULL
+pair_coeff      * * ffield.reax.mgoh H O Mg
+
+fix             1 all qeq/reaxff 1 0.0 10.0 1e-6 reaxff
+
+# --- Neighbor settings ---
+neighbor        2.0 bin
+neigh_modify    every 1 delay 0 check yes
+
+# --- Initialization ---
+velocity        all create 800.0 4928459 mom yes rot yes dist gaussian
+
+# --- Thermostat ---
+fix             2 all nvt temp 800.0 800.0 100.0
+
+# --- Output ---
+thermo          200
+thermo_style    custom step temp pe ke etotal press
+dump            1 all custom 500 dump.hydrogenation id type x y z q
+
+# --- Run ---
+timestep        0.25
+run             20000
+
+# ------------------------------------------------------------

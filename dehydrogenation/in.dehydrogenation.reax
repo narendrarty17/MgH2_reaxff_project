@@ -1,0 +1,33 @@
+# ------------------------------------------------------------
+# MgH2 dehydrogenation demo using ReaxFF (Mg/O/H)
+# ------------------------------------------------------------
+
+units           real
+atom_style      charge
+boundary        p p p
+
+read_data       dehydrogenation/data.mgh2
+
+# --- ReaxFF setup ---
+pair_style      reaxff NULL
+pair_coeff      * * ../potentials/reaxff/ffield.reax.mgoh H O Mg
+
+fix             1 all qeq/reaxff 1 0.0 10.0 1e-6 reaxff
+
+neighbor        2.0 bin
+neigh_modify    every 1 delay 0 check yes
+
+# --- Temperature ramp (dehydrogenation) ---
+velocity        all create 300.0 12345 mom yes rot yes dist gaussian
+
+fix             2 all nvt temp 300.0 1200.0 200.0
+
+# --- Output ---
+thermo          200
+thermo_style    custom step temp pe etotal press
+dump            1 all custom 500 dump.dehydrogenation id type x y z q
+
+timestep        0.25
+run             30000
+
+# ------------------------------------------------------------
