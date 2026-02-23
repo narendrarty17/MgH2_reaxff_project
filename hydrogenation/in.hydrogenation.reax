@@ -25,7 +25,7 @@ mass 3 24.305
 
 # --- ReaxFF setup ---
 pair_style      reaxff NULL
-pair_coeff      * * ffield.reax.mgoh H O Mg
+pair_coeff      * * ../potentials/reaxff/ffield.reax.mgoh H O Mg
 
 fix             1 all qeq/reaxff 1 0.0 10.0 1e-6 reaxff
 

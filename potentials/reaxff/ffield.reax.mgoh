@@ -1,42 +1,4 @@
-# ----------------------------------------------------------------------
-# ReaxFF force field for Mg / O / H systems
-#
-# Source:
-#   Yong Zhang, Zheng Mei, Fang-Chao Hou, Xiao-Hong Wu,
-#   Yun-Hui Hou, Min Li, Jing Sun, Liang Song
-#   "Development of a ReaxFF reactive force-field modeling for
-#    magnesium nanoparticles and water system"
-#   Applied Surface Science, 2025
-#   DOI: 10.1016/j.apsusc.2025.163207
-#
-# Elements (order in this file):
-#   H  O  Mg
-#
-# Intended use:
-#   - Reactive MD of Mg-based systems
-#   - Mg hydrogenation and dehydrogenation
-#   - Mg nanoparticles and surfaces
-#   - Mg–H, Mg–O, O–H bond formation and breaking
-#   - Water-assisted reactions and oxidation effects
-#
-# Training data includes:
-#   - Quantum-mechanical data for Mg/O/H species
-#   - Equations of state of Mg, MgH2, MgO, and Mg(OH)2
-#
-# Limitations:
-#   - Not optimized for oxygen-free bulk MgH2 thermodynamics
-#   - Not intended for high-precision formation enthalpy benchmarking
-#   - Not suitable for long-term cycling predictions without validation
-#
-# Notes:
-#   - This force field was extracted from the Supporting Information
-#     (Section S3) of the above reference.
-#   - Use with LAMMPS pair_style reaxff.
-#   - pair_coeff order MUST match the element order in this file:
-#       pair_coeff * * ffield.reax.mgoh H O Mg
-#
-# ----------------------------------------------------------------------
-
+! ReaxFF force field for Mg / O / H systems
 
 39 ! Number of general parameters
  50.0000 !p(boc1) 
